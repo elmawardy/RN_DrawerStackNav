@@ -7,6 +7,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator,DrawerItems } from 'react-navigation-drawer';
 import LinearGradient from 'react-native-linear-gradient';
+import RNBottomActionSheet from 'react-native-bottom-action-sheet';
+
 
 
 class HomeScreen extends Component {
@@ -15,7 +17,8 @@ class HomeScreen extends Component {
     super(props);
 
     this.state = {
-      sideMenuOpen:false
+      sideMenuOpen:false,
+      sheetView:false
     };
   }
 
@@ -56,7 +59,16 @@ class HomeScreen extends Component {
     });
   }
 
+  _openBottomSheet = () =>{
+    this.setState({sheetView:true})
+  }
+
   render() {
+    let device = <Icon family={"MaterialCommunityIcons"} name='cellphone' color={'#55B3AE'} size={30} />
+    let outlook = <Icon family={"MaterialCommunityIcons"} name='outlook' size={30} color={'#1976d2'}  />
+    let messenger = <Icon family={"MaterialCommunityIcons"} name='facebook-messenger' size={30} color={'#1976d2'}  />
+    let whatsapp = <Icon family={"MaterialCommunityIcons"} name='whatsapp' size={30} color={'#42B689'}  />
+
     return (
         <PaperProvider>
           <StatusBar backgroundColor="#1666b5" barStyle="light-content" />
@@ -76,13 +88,24 @@ class HomeScreen extends Component {
 
           <View style={{justifyContent:'center',flex:1,alignItems:'center'}}>
             <View>
-              <Icon name="file-upload" size={190} color="gray" />
+              <Icon name="file-upload" size={190} color="gray"  />
             </View>
-            <PButton mode="contained" color="#1976d2" onPress={() => console.log('Pressed')}>
+            <PButton mode="contained" color="#1976d2" onPress={this._openBottomSheet}>
               Upload
             </PButton>
           </View>
-        </PaperProvider>
+
+
+          <RNBottomActionSheet.SheetView visible={this.state.sheetView} title={"Upload from"} theme={"light"} onSelection={(index, value) => {
+            // value is optional
+            console.log("selection: " + index + " " + value);
+          }}>
+            <RNBottomActionSheet.SheetView.Item title={"Device"} icon={device} />
+            <RNBottomActionSheet.SheetView.Item title={"Outlook"} icon={outlook} />
+            <RNBottomActionSheet.SheetView.Item title={"Messenger"} icon={messenger} />
+            <RNBottomActionSheet.SheetView.Item title={"What's App"} icon={whatsapp} />
+          </RNBottomActionSheet.SheetView>
+        </PaperProvider> 
     );
   }
 }
