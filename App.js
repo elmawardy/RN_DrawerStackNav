@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Provider as PaperProvider,Appbar,IconButton,Button as PButton,Avatar} from 'react-native-paper';
+import { Provider as PaperProvider,Appbar,IconButton,Button as PButton,Avatar,Menu} from 'react-native-paper';
 import { StyleSheet,StatusBar,View,Image,Button,Text,ScrollView,SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import 'react-native-gesture-handler'
@@ -17,8 +17,8 @@ class HomeScreen extends Component {
     super(props);
 
     this.state = {
-      sideMenuOpen:false,
-      sheetView:false
+      sheetView:false,
+      dropMenu:false,
     };
   }
 
@@ -26,37 +26,47 @@ class HomeScreen extends Component {
     this.props.navigation.setParams({ _handleSearch: this._handleSearch });
   }
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: 'PrintApp',
-      headerRight: () => (
-        <View style={{flex:1,flexDirection:'row'}}>
-          <IconButton
-            icon="thumb-up"
-            color="white"
-            size={25}
-            onPress={navigation.getParam('_handleSearch')}
-          />
-          <IconButton
-            icon="dots-vertical"
-            color="white"
-            size={25}
-            onPress={() => console.log('Pressed')}
-          />
-        </View>
-      ),
-    }
-  };
+  // static navigationOptions = ({ navigation }) => {
+  //   return {
+  //     title: 'PrintApp',
+  //     headerRight: () => (
+  //       <View style={{flex:1,flexDirection:'row'}}>
+  //         <IconButton
+  //           icon="thumb-up"
+  //           color="white"
+  //           size={25}
+  //           onPress={navigation.getParam('_handleSearch')}
+  //         />
+  //         <IconButton
+  //           icon="dots-vertical"
+  //           color="white"
+  //           size={25}
+  //           onPress={() => console.log('Pressed')}
+  //         />
+  //       </View>
+  //     ),
+  //   }
+  // };
 
   _handleSearch = () => console.log('Searching');
 
   _handleMore = () => console.log('Shown more');
 
-  toggleSideMenu() {
-    console.log(this.state.sideMenuOpen)
-    this.setState({
-      sideMenuOpen: !this.state.sideMenuOpen,
-    });
+  _openDropMenu = () => {
+    this.setState({dropMenu:true})
+    console.log(this.state.dropMenu)
+  }
+  _closeDropMenu = () => {
+    this.setState({dropMenu:false})
+  }
+
+  toggleSideMenu =()=> {
+    // console.log(this.state.sideMenuOpen)
+
+    this.props.navigation.toggleDrawer()
+    // this.setState({
+    //   sideMenuOpen: !this.state.sideMenuOpen,
+    // });
   }
 
   _openBottomSheet = () =>{
@@ -82,7 +92,24 @@ class HomeScreen extends Component {
               subtitle="Home"
             />
             <Appbar.Action icon="thumb-up" onPress={this._handleSearch} />
-            <Appbar.Action icon="dots-vertical" onPress={this._handleMore} />
+            <Menu
+              visible={this.state.dropMenu}
+              onDismiss={this._closeDropMenu}
+              anchor={
+                <IconButton
+                  icon="dots-vertical"
+                  color="white"
+                  size={25}
+                  onPress={this._openDropMenu}
+                />
+              }
+            >
+              <Menu.Item onPress={() => {}} title="Item 1" />
+              <Menu.Item onPress={() => {}} title="Item 2" />
+              <Menu.Item onPress={() => {}} title="Item 3" />
+              <Menu.Item onPress={() => {}} title="Item 4" />
+              <Menu.Item onPress={() => {}} title="Item 5" />
+            </Menu>
           </Appbar>
 
 
@@ -98,13 +125,16 @@ class HomeScreen extends Component {
 
           <RNBottomActionSheet.SheetView visible={this.state.sheetView} title={"Upload from"} theme={"light"} onSelection={(index, value) => {
             // value is optional
-            console.log("selection: " + index + " " + value);
+            console.log("selection: " + index + " Pressed");
           }}>
             <RNBottomActionSheet.SheetView.Item title={"Device"} icon={device} />
             <RNBottomActionSheet.SheetView.Item title={"Outlook"} icon={outlook} />
             <RNBottomActionSheet.SheetView.Item title={"Messenger"} icon={messenger} />
             <RNBottomActionSheet.SheetView.Item title={"What's App"} icon={whatsapp} />
           </RNBottomActionSheet.SheetView>
+
+
+          
         </PaperProvider> 
     );
   }
