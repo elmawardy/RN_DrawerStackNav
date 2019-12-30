@@ -53,14 +53,14 @@ class HomeScreen extends Component {
   _handleMore = () => console.log('Shown more');
 
   _openDropMenu = () => {
-    this.setState({dropMenu:true})
-    console.log(this.state.dropMenu)
+    this.setState({dropMenu:true});
+    console.log(this.state.dropMenu);
   }
   _closeDropMenu = () => {
-    this.setState({dropMenu:false})
+    this.setState({dropMenu:false});
   }
 
-  toggleSideMenu =()=> {
+  toggleSideMenu = () => {
     // console.log(this.state.sideMenuOpen)
 
     this.props.navigation.toggleDrawer()
@@ -104,11 +104,11 @@ class HomeScreen extends Component {
                 />
               }
             >
-              <Menu.Item onPress={() => {}} title="Item 1" />
-              <Menu.Item onPress={() => {}} title="Item 2" />
-              <Menu.Item onPress={() => {}} title="Item 3" />
-              <Menu.Item onPress={() => {}} title="Item 4" />
-              <Menu.Item onPress={() => {}} title="Item 5" />
+              <Menu.Item title="Item 1" />
+              <Menu.Item title="Item 2" />
+              <Menu.Item title="Item 3" />
+              <Menu.Item title="Item 4" />
+              <Menu.Item title="Item 5" />
             </Menu>
           </Appbar>
 
@@ -123,7 +123,7 @@ class HomeScreen extends Component {
           </View>
 
 
-          <RNBottomActionSheet.SheetView visible={this.state.sheetView} title={"Upload from"} theme={"light"} onSelection={(index, value) => {
+          <RNBottomActionSheet.SheetView visible={this.state.sheetView} title={"Upload from"} theme={"light"} onCancel={(e)=>{this.setState({sheetView:false})}} onSelection={(index) => {
             // value is optional
             console.log("selection: " + index + " Pressed");
           }}>
