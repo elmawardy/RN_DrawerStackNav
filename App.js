@@ -8,7 +8,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator,DrawerItems } from 'react-navigation-drawer';
 import LinearGradient from 'react-native-linear-gradient';
 import RNBottomActionSheet from 'react-native-bottom-action-sheet';
-
+import DocumentPicker from 'react-native-document-picker';
 
 
 class HomeScreen extends Component {
@@ -73,6 +73,26 @@ class HomeScreen extends Component {
     this.setState({sheetView:true})
   }
 
+  _tryUpload = async () =>{
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      console.log(
+        res.uri,
+        res.type, // mime type
+        res.name,
+        res.size
+      );
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker, exit any dialogs or menus and move on
+      } else {
+        throw err;
+      }
+    }
+  }
+
   render() {
     let device = <Icon family={"MaterialCommunityIcons"} name='cellphone' color={'#55B3AE'} size={30} />
     let outlook = <Icon family={"MaterialCommunityIcons"} name='outlook' size={30} color={'#1976d2'}  />
@@ -120,6 +140,9 @@ class HomeScreen extends Component {
             <PButton mode="contained" color="#1976d2" onPress={this._openBottomSheet}>
               Upload
             </PButton>
+            <PButton mode="contained" color="#1976d2" onPress={this._tryUpload}>
+              Upload 2
+            </PButton>
           </View>
 
 
@@ -130,7 +153,7 @@ class HomeScreen extends Component {
             <RNBottomActionSheet.SheetView.Item title={"Device"} icon={device} />
             <RNBottomActionSheet.SheetView.Item title={"Outlook"} icon={outlook} />
             <RNBottomActionSheet.SheetView.Item title={"Messenger"} icon={messenger} />
-            <RNBottomActionSheet.SheetView.Item title={"What's App"} icon={whatsapp} />
+            <RNBottomActionSheet.SheetView.Item title={"Whatsapp"} icon={whatsapp} />
           </RNBottomActionSheet.SheetView>
 
 
